@@ -57,7 +57,7 @@ class Chef
         begin 
           knife_ssh.run
         end
-			end
+    end
 
       def knife_ssh
         ssh = Chef::Knife::Ssh.new
@@ -73,6 +73,6 @@ class Chef
         ssh.config[:on_error] = :raise
         ssh
       end
-		end
-	end
+    end
+  end
 end
