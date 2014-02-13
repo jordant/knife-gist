@@ -20,6 +20,11 @@ class Chef
         :long => "--identity-file IDENTITY_FILE",
         :description => "The SSH identity file used for authentication"
 
+      option :use_sudo,
+        :long => "--sudo",
+        :description => "Execute the gist via sudo",
+        :boolean => true
+
 
       option :gist_args,
         :short => "-g ARGUMENTS",
@@ -28,7 +33,6 @@ class Chef
 
       def run
         self.config = Chef::Config.merge!(config) 
-
 
         if name_args.length < 1
           show_usage
@@ -66,9 +70,10 @@ class Chef
         end
 
         config[:server_name] = r.join("\n")
-        config[:ssh_command] = "curl -L -s -o #{gist_file} #{gist_uri} && chmod 755 #{gist_file} && #{gist_file}"
-        if config[:gist_args]
-          config[:ssh_command] += " " + config[:gist_args]
+        config[:ssh_command] = "bash -c 'curl -L -s -o #{gist_file} #{gist_uri} && chmod 755 #{gist_file} && #{gist_file} #{config[:gist_args]}'"
+
+        if config[:use_sudo]
+          config[:ssh_command].insert(0, "sudo ") 
         end
 
         begin 
