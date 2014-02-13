@@ -23,9 +23,17 @@ class Chef
       def run
         self.config = Chef::Config.merge!(config) 
 
+
         if name_args.length < 1
           show_usage
           ui.fatal("No gist name given")
+          exit 1
+        end
+
+        if name_args.length < 2
+          show_usage
+          ui.fatal("No search query")
+          exit 1
         end
 
         gist = name_args.first
