@@ -1,7 +1,7 @@
 require 'chef/knife'
 
 class Chef
-	class Knife
+  class Knife
     class Gist < Knife
       banner "Example: knife gist GIST_ID role:webservers"
       deps do
