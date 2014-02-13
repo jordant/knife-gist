@@ -3,8 +3,7 @@ require 'chef/knife'
 class Chef
 	class Knife
     class Gist < Knife
-			banner "Example: knife gist GIST_ID role:webservers"
-
+      banner "Example: knife gist GIST_ID role:webservers"
       deps do
         require 'chef/knife/ssh'
         Chef::Knife::Ssh.load_deps
@@ -21,17 +20,16 @@ class Chef
         :long => "--identity-file IDENTITY_FILE",
         :description => "The SSH identity file used for authentication"
 
-			def run
-				self.config = Chef::Config.merge!(config) 
-				
-        if name_args.length < 1
-					show_usage
-					ui.fatal("No gist name given")
-					exit 1
-				end
+      def run
+        self.config = Chef::Config.merge!(config) 
 
-				gist = name_args.first
-				search = name_args.last
+        if name_args.length < 1
+          show_usage
+          ui.fatal("No gist name given")
+        end
+
+        gist = name_args.first
+        search = name_args.last
 
         gist_uri = "https://gist.github.com/#{gist}.txt"
         gist_file = "$HOME/#{gist}.gist"
