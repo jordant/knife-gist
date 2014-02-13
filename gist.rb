@@ -20,6 +20,12 @@ class Chef
         :long => "--identity-file IDENTITY_FILE",
         :description => "The SSH identity file used for authentication"
 
+
+      option :gist_args,
+        :short => "-g ARGUMENTS",
+        :long => "--gist-args ARGUMENTS",
+        :description => "Arguments to be passed to the gist"
+
       def run
         self.config = Chef::Config.merge!(config) 
 
@@ -61,6 +67,9 @@ class Chef
 
         config[:server_name] = r.join("\n")
         config[:ssh_command] = "curl -L -s -o #{gist_file} #{gist_uri} && chmod 755 #{gist_file} && #{gist_file}"
+        if config[:gist_args]
+          config[:ssh_command] += " " + config[:gist_args]
+        end
 
         begin 
           knife_ssh.run
